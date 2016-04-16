@@ -1,0 +1,22 @@
+data00mysql:
+  image: busybox:buildroot-2014.02
+  volumes:
+    - /var/lib/mysql
+data00testlink:
+  image: busybox:buildroot-2014.02
+mysql:
+  image: mysql:5.6.24
+  environment:
+    MYSQL_ROOT_PASSWORD: password
+  volumes_from:
+    - data00mysql
+  ports:
+    - "3306:3306"
+testlink:
+  image: imtnd/testlink:latest
+  volumes_from:
+    - data00testlink
+  links:
+    - mysql:mysql
+  ports:
+    - "80:80"
